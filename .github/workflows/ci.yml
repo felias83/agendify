@@ -1,0 +1,46 @@
+name: CI Pipeline - Agendify
+
+on:
+  push:
+    branches: [ "main", "master", "develop" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+
+    - name: Configurar PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mbstring, dom, fileinfo, sqlite, pdo_sqlite
+        coverage: none
+
+    - name: Copiar .env.example
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+    - name: Instalar dependencias de Composer
+      run: composer install --prefer-dist --no-interaction --no-progress
+
+    - name: Generar App Key
+      run: php artisan key:generate
+
+    - name: Crear BD SQLite temporal
+      run: touch database/database.sqlite
+
+    - name: Ejecutar Migraciones
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/database.sqlite
+      run: php artisan migrate --force
+
+    - name: Ejecutar Pruebas con Pest
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/database.sqlite
+      run: ./vendor/bin/pest
