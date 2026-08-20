@@ -35,6 +35,15 @@ jobs:
 
     - name: Crear BD SQLite temporal
       run: touch database/database.sqlite
+    - name: Instalar Node.js y compilar assets
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Build assets con Vite
+      run: |
+        npm ci
+        npm run build
 
     - name: Ejecutar Migraciones
       env:
