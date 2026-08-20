@@ -35,3 +35,47 @@ El proyecto incluye dobles de prueba (*Fakes*) para el almacenamiento en S3 y ba
 
 ```bash
 php artisan test
+
+PASS  Tests\Unit\ExampleTest
+  ✓ that true is true
+
+  PASS  Tests\Feature\AppointmentBookingTest
+  ✓ un proveedor no puede tener dos citas que se solapen en el mismo horario
+
+  PASS  Tests\Feature\AttachmentUploadTest
+  ✓ se puede subir un comprobante a AWS S3 para una cita
+
+  Tests:    4 passed (6 assertions)
+  Duration: 0.85s
+
+  ⚙️ Instalación Local
+Sigue estos pasos para clonar e instalar el proyecto en tu entorno local:
+
+1. Clonar el repositorio
+Bash
+git clone [https://github.com/TU_USUARIO/agendify.git](https://github.com/TU_USUARIO/agendify.git)
+cd agendify
+2. Instalar dependencias
+Bash
+composer install
+3. Configurar variables de entorno
+Bash
+cp .env.example .env
+php artisan key:generate
+4. Configurar Base de Datos y Almacenamiento (.env)
+Asegúrate de definir el almacenamiento local o tus credenciales de AWS S3 en el archivo .env:
+
+Ini, TOML
+FILESYSTEM_DISK=s3
+AWS_ACCESS_KEY_ID=tu_access_key
+AWS_SECRET_ACCESS_KEY=tu_secret_key
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=tu_bucket_s3
+5. Ejecutar migraciones
+Bash
+php artisan migrate
+6. Iniciar servidor de desarrollo
+Bash
+php artisan serve
+📄 Licencia
+Este proyecto es de código abierto bajo la licencia MIT.
