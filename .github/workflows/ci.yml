@@ -28,7 +28,7 @@ jobs:
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
     - name: Instalar dependencias de Composer
-      run: composer install --prefer-dist --no-interaction --no-progress
+      run: composer install --prefer-dist --no-interaction --no-progress --ignore-platform-req=php
 
     - name: Generar App Key
       run: php artisan key:generate
